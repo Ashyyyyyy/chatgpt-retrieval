@@ -3,3 +3,9 @@ __pycache__
 persist/
 .DS_Store
 .chroma/
+data/
+data2/
+cache/
+*.pdf
+*.txt
+*.docx
