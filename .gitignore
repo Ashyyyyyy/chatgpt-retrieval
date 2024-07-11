@@ -5,7 +5,8 @@ persist/
 .chroma/
 data/
 data2/
-cache/
+embeddings_cache/
 *.pdf
 *.txt
 *.docx
+*.sql

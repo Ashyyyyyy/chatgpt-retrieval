@@ -1,28 +1,46 @@
-# chatgpt-retrieval
+# README
 
-Simple script to use ChatGPT on your own files.
+## Dependencies
 
-Here's the [YouTube Video](https://youtu.be/9AXP7tCI9PI).
+```bash
+pip install chromadb
 
-## Installation
+# Langchain
+pip install langchain langchain_community langchain_core langchain_text_splitters langchain_chroma
 
-Install [Langchain](https://github.com/hwchase17/langchain) and other required packages.
-```
-pip install langchain openai chromadb tiktoken unstructured
-```
-Modify `constants.py.default` to use your own [OpenAI API key](https://platform.openai.com/account/api-keys), and rename it to `constants.py`.
+# DirectoryLoader
+pip install "unstructued[xlsx]"
+pip install "unstructured[docx]"
+pip install tqdm
 
-Place your own data into `data/data.txt`.
+# thrift
 
-## Example usage
-Test reading `data/data.txt` file.
-```
-> python chatgpt.py "what is my dog's name"
-Your dog's name is Sunny.
+pip install thrift
 ```
 
-Test reading `data/cat.pdf` file.
-```
-> python chatgpt.py "what is my cat's name"
-Your cat's name is Muffy.
+## Directory Tree
+
+- `pdfschat_cn_queue.py` 主程序
+
+- `constant.py` 存放API_KEYS
+
+- `data/` 存储所有文档的原始文件，可以时pdf，txt，word，excel。
+
+- `SEserver_queue.py` 服务器程序
+
+初次运行后会生成的缓存文件：
+
+- `embeddings_cache/` 存放所有embeddings
+
+- `persist/` 存放vectorstore（在sql中）
+
+- `file_name_dictionary/` 存放记录文件变化的logs
+
+- `record_manager_cache.sql` 存放记录vectorstore变化的index，更新时可以仅更新变化的条目。
+
+## Thrift
+
+```bash
+thrift -r --gen js:node searchEngine.thrift
+thrift -r --gen py searchEngine.thrift
 ```
