@@ -45,7 +45,7 @@ data_dictionary_path = './file_name_dictionary'
 data_dictionary = './file_name_dictionary/logs.json'
 data_folder = './data'
 
-score_threshold = 0.52
+score_threshold = 0.56
 k = 12
 
 # 获取文件夹中所有文件的完整路径

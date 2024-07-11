@@ -6,6 +6,7 @@ persist/
 data/
 data2/
 embeddings_cache/
+file_name_dictionary/
 *.pdf
 *.txt
 *.docx
