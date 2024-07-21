@@ -45,7 +45,7 @@ data_dictionary_path = './file_name_dictionary'
 data_dictionary = './file_name_dictionary/logs.json'
 data_folder = './data'
 
-score_threshold = 0.56
+score_threshold = 0.52
 k = 12
 
 # 获取文件夹中所有文件的完整路径
@@ -76,7 +76,7 @@ def splitter():
     # loader = TextLoader("data/data.txt").load()
     # loader = PyPDFDirectoryLoader("data/").load()
     text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=500,
+        chunk_size=400,
         chunk_overlap=100,
         length_function=len,
         # separators=["\n\n", "\n", " ", "", "。", "，"]
@@ -182,10 +182,16 @@ def new_similarity_search_with_relevance_scores(
         )
 
     if score_threshold is not None:
+        docs_and_similarities.sort(key=lambda x: x[1], reverse=True)
+        if docs_and_similarities[0][1] > 0.8:
+            new_score_threshold = score_threshold + 0.1
+        else:
+            new_score_threshold = score_threshold
+
         docs_and_similarities = [
             (doc, similarity)
             for doc, similarity in docs_and_similarities
-            if similarity >= score_threshold
+            if similarity >= new_score_threshold
         ]
         # if len(docs_and_similarities) == 0:
         #     warnings.warn(
@@ -197,7 +203,7 @@ def new_similarity_search_with_relevance_scores(
 
 langchain_core.vectorstores.VectorStore.similarity_search_with_relevance_scores = new_similarity_search_with_relevance_scores
 
-# Vectorstore setup
+# Retriever setup
 if not os.path.exists(PERSIST_path) or not os.path.exists(data_dictionary):
     print("------ No dictionary and vectorstore.------")
     if not os.path.exists(PERSIST_path):
@@ -280,7 +286,7 @@ history_aware_retriever = create_history_aware_retriever(
 system_prompt = (
     "You are an assistant for question-answering tasks. "
     "Use the following pieces of retrieved context to answer "
-    "the question. If you don't get the information from these pieces, say that you don't know. "
+    "the question. If you don't get the related information, say that you don't know. "
     "DON'T make up answers."
     "\n\n"
     "{context}"
